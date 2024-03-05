@@ -61,4 +61,23 @@ class MainTest {
   }
 
   // TODO: Create your test(s) below. /////////////////////////////////////////
+  @Test
+  void testsGetId_WithSpecialCharacters() {
+    assertDoesNotThrow(
+      () -> {
+        Connection db = Main.createConnection();
+        try {
+          String wordWithSpecialCharacters = "word'with'special'characters";
+          int expectedId = -1;
+          int actualId = Main.getId(db, wordWithSpecialCharacters);
+          assertNotEquals(expectedId, actualId, "ID should not be -1 when word contains special characters");
+        } finally {
+          if (db != null && !db.isClosed()) {
+            db.close();
+          }
+        }
+      }, "No exception should be thrown when retrieving ID with special characters"
+    );
+  }
+
 }
